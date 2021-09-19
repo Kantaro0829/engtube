@@ -1,0 +1,19 @@
+POST http://localhost:5000/new_user_reg
+content-type: application/json
+
+{
+    "name": "テスト太郎",
+    "password": "Kan272420",
+    "email": "2190431@ecc.ac.jp"
+}
+
+
+###
+
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email": "2190431@ecc.ac.jp",
+    "password": "Kan272420"
+}

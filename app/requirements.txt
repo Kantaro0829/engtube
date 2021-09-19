@@ -1,0 +1,12 @@
+flask
+youtube_transcript_api
+PyMySQL
+requests
+bs4
+lxml
+mysqlclient
+sqlalchemy
+google-api-python-client
+mysql-connector-python
+pyjwt
+flask_cors

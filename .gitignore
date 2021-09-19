@@ -1,0 +1,2 @@
+db/mysql_data/*
+app/__pycache__/*
