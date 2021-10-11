@@ -14,6 +14,10 @@ from flask_cors import CORS, cross_origin
 from setting import session# セッション変数の取得
 from user import *# Userモデルの取得
 
+from user_registry import UserLogin, UserRegistry
+from  get_meaning import GetMeaning
+from jwt_auth import JwtAuth
+
 app = Flask(__name__)
 CORS(app, support_credentials=True)
 app.config['JSON_AS_ASCII'] = False
@@ -22,7 +26,10 @@ app.config['JSON_AS_ASCII'] = False
 @app.route("/", methods=['GET'])
 @cross_origin(supports_credentials=True)
 def index():
-    return jsonify({"name": "Kantaro", "stand":"The World"})
+    ur = UserRegistry("password", "mail.com", "key")
+    dic_temp = ur.new_user_reg()
+    print(dic_temp)
+    return jsonify(dic_temp)
 
 @app.route("/new_user_reg", methods=["POST"])
 @cross_origin(supports_credentials=True)
@@ -30,58 +37,40 @@ def new_user_reg():
     '''
     受け取るJSON : user_info[]
     {
-        "name": String,
         "password": String,
-        "email": String
+        "email": String,
+        "api_key": String
     }
+
     '''
     start = time.time()#計測開始
     user_info = json.loads(request.get_data().decode())
+    print(user_info)
 
     #user table にレコードの追加
     try:
-        user = User()
-        user.name = user_info['name']
-        user.password = hashlib.sha256(user_info['password'].encode()).hexdigest()
-        user.mail = user_info['email']
-
-        session.add(user)#insert
-        session.flush()
-        session.commit()#commit
-
-        jwt_payload={}
-
-        jwt_payload['id'] = user.id
-
-        key = "secret_key_goes_here"
-        encoded = jwt.encode(jwt_payload, key, algorithm="HS256")
-        print(encoded)
-
-        elapsed_time = time.time() - start
-
-        session.close()
-
-        return jsonify({
+        ur = UserRegistry(user_info)
+        dic_temp = ur.new_user_reg()
+        jwt_auth = JwtAuth()
+        #token生成
+        token = jwt_auth.encode(dic_temp)
+        temp = {
             "status": 200,
-            "token": encoded,
-            "elapsedTimeOfLoginService": elapsed_time
-        })
+            "token": token
+        }
+
+        return jsonify(temp)
+        
     except exc.SQLAlchemyError as e:
         message = None
         if type(e) is exc.IntegrityError:
             message = "メールアドレスがすでに登録されています"
-            elapsed_time = time.time() - start
             print(type(e))
             return jsonify({
                 "status": 400,
                 "message": message,
-                "elapsedTime": elapsed_time
-            })
-        elapsed_time = time.time() - start
-        return jsonify({"status":400, "massage":"DBに問題あるかも", "elapsedTime": elapsed_time})
-
-
-
+        })
+        return jsonify({"status":400, "massage":"DBに問題あるかも"})
 
 @app.route("/login", methods=["POST"])
 @cross_origin(supports_credentials=True)
@@ -93,63 +82,47 @@ def login():
         "password": password
     }
     '''
-    start = time.time()
     user_info = json.loads(request.get_data().decode())
     try:
+        ul = UserLogin(user_info)
+        id_and_apikey = ul.login()
 
-        user = User()#User テーブルレコード参照開始
-        # mail_existance = session.query(func.count(User.mail)).\
-        #     filter(User.mail == user_info['email'])
-        # print("メールアドレスの個数：", mail_existance, "type:", type(mail_existance))
+        if id_and_apikey['id'] != 0:
+            jwt_auth = JwtAuth()
+            token = jwt_auth.encode(id_and_apikey)
 
-        auth_pass = session.query(User.password).\
-            filter(User.mail == user_info['email']).\
-                one()
-        
-        print(auth_pass[0]+"　は　"+str(user_info['email'])+"　のパスワード！！")
+            return jsonify({"status":200, "token":token})
 
-        #パスワードをハッシュ化して比較
-        if hashlib.sha256(user_info['password'].encode()).hexdigest() == auth_pass[0]:
-
-
-            id = session.query(User.id).\
-                filter(User.mail == user_info['email']).\
-                    one()
-            
-            print("変数idの中身は：", id)
-            print("変数idの中身は：", id[0])
-            #print("変数idの中身は：", len(id))
-            jwt_payload={}
-
-            jwt_payload['id'] = id[0]
-
-            key = "secret_key_goes_here"
-            encoded = jwt.encode(jwt_payload, key, algorithm="HS256")
-            print(encoded)
-            session.close()
-            elapsed_time = time.time() - start
-
-
-
-            session.close()
-
-            return jsonify({
-                        "status": 200,
-                        "token": encoded,
-                        "elapsedTime": elapsed_time
-                    })
-        
-        session.close()
-        
-        return jsonify({
-                "status": 400,
-                "message": "failed to login"
-                })
-    except:
         return jsonify({
             "status": 400,
             "message": "正しいメールアドレスまたはパスワードを入力してください"
         })
+    except:
+        return jsonify({
+            "status": 400,
+            "message": "db のエラー？"
+        })
+
+@app.route("/get_meaning", methods=["POST"])
+@cross_origin(supports_credentials=True)
+def get_meaning():
+    """
+    受け取るJson
+    {
+        token: String,
+        data: [apple, lemon]
+    }
+    """
+    token_and_data = json.loads(request.get_data().decode())
+    gm = GetMeaning(token_and_data['data'])
+
+    result_list, failure_list = gm.scrape_from_weblio()
+    return jsonify({
+        "status": 200,
+        "data": result_list,
+        "failure": failure_list
+    })
+
 
 
 if __name__ == "__main__":
