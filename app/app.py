@@ -18,6 +18,7 @@ from user_registry import UserLogin, UserRegistry, WordService
 from  get_meaning import GetMeaning
 from jwt_auth import JwtAuth
 from get_youtube_info import GetSubtittle, GetRelatedVideos
+from get_sound import GetSoundOfEnglish
 #from googleapiclient.discovery import build
 #from apiclient.discovery import build
 
@@ -211,6 +212,24 @@ def get_all_words():
     return jsonify({"status":200, "data":result})
     #return jsonify({"status": 200, "message": "取得成功", "data":result})
 
+
+@app.route("/get_sounds", methods=["POST"])
+@cross_origin(supports_credentials=True)
+def get_sounds():
+    """
+    {
+        token: String
+        data:["apple", "lemon"]
+    }
+    """
+    token_and_data = json.loads(request.get_data().decode())
+    success_list, failure_list = GetSoundOfEnglish(token_and_data['data']).get_sound()
+
+    return jsonify({
+        "status": 200,
+        "success": success_list,
+        "failure": failure_list
+    })
 
 
 
