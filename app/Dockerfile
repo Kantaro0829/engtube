@@ -7,5 +7,6 @@ ADD requirements.txt $project_dir
 WORKDIR $project_dir
 
 RUN pip install -r requirements.txt
+RUN pip install --upgrade google-api-python-client
 
 

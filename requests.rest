@@ -8,8 +8,8 @@ Content-Type: application/json
 
 {
     "password": "password",
-    "email": "example@gmail.com",
-    "api_key": "apiKey"
+    "email": "example2@gmail.com",
+    "api_key": "AIzaSyB5ydOIa5tDNxvehwGnP7aLj_4e7CyyIBI"
 }
 
 ###
@@ -18,6 +18,70 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-    "email": "example@gmail.com",
+    "email": "example2@gmail.com",
     "password": "password"
+}
+
+###
+
+POST http://localhost:5000/get_meaning
+Content-Type: application/json
+
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Miwia2V5IjoiQUl6YVN5QjV5ZE9JYTV0RE54dmVod0duUDdhTGpfNGU3Q3l5SUJJIn0.B_3A0-_ZJq1uf3EDo2lj9b0BfJaaEAC68FFoRCVZQjo",
+    "data": ["apple", "lemon"]
+}
+
+###
+
+POST http://localhost:5000/get_subtittle
+Content-Type: application/json
+
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Miwia2V5IjoiQUl6YVN5QjV5ZE9JYTV0RE54dmVod0duUDdhTGpfNGU3Q3l5SUJJIn0.B_3A0-_ZJq1uf3EDo2lj9b0BfJaaEAC68FFoRCVZQjo",
+    "video_id": "0obYR-nf45I"
+}
+
+###
+POST http://localhost:5000/get_related_videoid
+Content-Type: application/json
+
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Miwia2V5IjoiQUl6YVN5QjV5ZE9JYTV0RE54dmVod0duUDdhTGpfNGU3Q3l5SUJJIn0.B_3A0-_ZJq1uf3EDo2lj9b0BfJaaEAC68FFoRCVZQjo",
+    "video_id": "0obYR-nf45I"
+}
+
+###
+POST http://localhost:5000/word_registry
+Content-Type: application/json
+
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Miwia2V5IjoiQUl6YVN5QjV5ZE9JYTV0RE54dmVod0duUDdhTGpfNGU3Q3l5SUJJIn0.B_3A0-_ZJq1uf3EDo2lj9b0BfJaaEAC68FFoRCVZQjo",
+    "video_id": "0obYR-nf45q",
+    "data":[
+            {"eng": "english", "jp": "英語"},
+            {"eng": "japanese", "jp": "日本語"} 
+        ]
+}
+
+###
+
+POST http://localhost:5000/word_registry
+Content-Type: application/json
+
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Miwia2V5IjoiQUl6YVN5QjV5ZE9JYTV0RE54dmVod0duUDdhTGpfNGU3Q3l5SUJJIn0.B_3A0-_ZJq1uf3EDo2lj9b0BfJaaEAC68FFoRCVZQjo",
+    "video_id": "0obYR-nf45I",
+    "data":[
+            {"eng": "lemon", "jp": "レモン"},
+            {"eng": "apple", "jp": "りんご"} 
+        ]
+}
+
+###
+POST http://localhost:5000/get_all_words
+Content-Type: application/json
+
+{
+     "token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Miwia2V5IjoiQUl6YVN5QjV5ZE9JYTV0RE54dmVod0duUDdhTGpfNGU3Q3l5SUJJIn0.B_3A0-_ZJq1uf3EDo2lj9b0BfJaaEAC68FFoRCVZQjo"
 }

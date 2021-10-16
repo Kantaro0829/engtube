@@ -16,9 +16,9 @@ ALTER TABLE users
   MODIFY user_id int(8) AUTO_INCREMENT,AUTO_INCREMENT=1;
 
 INSERT INTO users (password, email, youtube_api_key, last_watched_video_id)
-        VALUES ("a",
-                "test@gmail.com",
-                "AIzaSyB5ydOIa5tDNxvehwGnP7aLj_4e7CyyIBI",
+        VALUES ("password",
+                "example@gmail.com",
+                "AIzaSyDKY9T6Z7XYPRlCx6fLdfeujLfmPnDkldk",
                 "BN9yqF6Um98");
 
 CREATE TABLE toeic_info (
@@ -42,8 +42,8 @@ CREATE TABLE words (
   watched_day date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-ALTER TABLE words
-  ADD PRIMARY KEY (user_id);
+INSERT INTO words (user_id, video_id, english, japanese, watched_day)
+        VALUES(1, "BN9yqF6Um98", "english", "英語", '2020-05-01')
 
 
 
