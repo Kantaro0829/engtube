@@ -8,13 +8,14 @@ import datetime
 import hashlib#ハッシュ化用
 import jwt
 from sqlalchemy import exc, func
+from werkzeug.exceptions import RequestURITooLarge
 from flask_cors import CORS, cross_origin
 
 
 from setting import session# セッション変数の取得
 from user import *# Userモデルの取得
 
-from user_registry import UserLogin, UserRegistry, WordService
+from user_registry import UserLogin, UserRegistry, WordService, ToeicService
 from  get_meaning import GetMeaning
 from jwt_auth import JwtAuth
 from get_youtube_info import GetSubtittle, GetRelatedVideos
@@ -38,7 +39,7 @@ def index():
 @app.route("/new_user_reg", methods=["POST"])
 @cross_origin(supports_credentials=True)
 def new_user_reg():
-    '''
+    '''app
     受け取るJSON : user_info[]
     {
         "password": String,
@@ -230,6 +231,27 @@ def get_sounds():
         "success": success_list,
         "failure": failure_list
     })
+
+@app.route("/toeic_info_reg", methods=["POST"])
+@cross_origin(supports_credentials=True)
+def toeic_info_reg():
+    """
+    {
+        token: String,
+        score: Int,
+    }
+    """
+    token_and_data = json.loads(request.get_data().decode())
+    ja = JwtAuth()
+    decoded = ja.decode(token_and_data['token'])
+    toeic_info = ToeicService(decoded['id'], token_and_data['score'])
+    level = toeic_info.get_score_level()
+    result = toeic_info.score_reg(level)
+    if result:
+        return jsonify({"status":200, "message":"登録完了"})
+    return jsonify({"status":400, "message":"登録失敗"})
+
+
 
 
 

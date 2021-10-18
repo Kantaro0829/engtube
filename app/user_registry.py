@@ -157,3 +157,37 @@ class WordService():
         print(data_list)
 
         return data_list
+
+class ToeicService():
+    def __init__(self, id, score):
+        self.id = id
+        self.score = score
+
+    def get_score_level(self):
+        
+        if self.score > 800:
+            return 8
+        elif self.score > 700:
+            return 7
+        elif self.score > 600:
+            return 6
+        elif self.score > 500:
+            return 5
+        else:
+            return 4
+    
+    def score_reg(self, level):
+        tf = Toeic_info()
+        tf.id = self.id
+        tf.score = self.score
+        tf.level = level
+
+        session.add(tf)
+        session.flush()
+        session.commit()
+        print("登録完了")
+        print("id=", tf.id, "score=", tf.score, "level=", tf.level)
+        session.close()
+
+        return true
+        
