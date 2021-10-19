@@ -75,6 +75,7 @@ class UserLogin():
         
         else:
             self.dic = {"id": 0}
+            return self.dic
 
 class WordService():
     def __init__(self, id):

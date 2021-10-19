@@ -16,7 +16,7 @@ ALTER TABLE users
   MODIFY user_id int(8) AUTO_INCREMENT,AUTO_INCREMENT=1;
 
 INSERT INTO users (password, email, youtube_api_key, last_watched_video_id)
-        VALUES ("password",
+        VALUES ("5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
                 "example@gmail.com",
                 "AIzaSyDKY9T6Z7XYPRlCx6fLdfeujLfmPnDkldk",
                 "BN9yqF6Um98");

@@ -85,3 +85,12 @@ Content-Type: application/json
 {
      "token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Miwia2V5IjoiQUl6YVN5QjV5ZE9JYTV0RE54dmVod0duUDdhTGpfNGU3Q3l5SUJJIn0.B_3A0-_ZJq1uf3EDo2lj9b0BfJaaEAC68FFoRCVZQjo"
 }
+
+###
+POST http://localhost:5000/get_sounds
+Content-Type: application/json
+
+{
+     "token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Miwia2V5IjoiQUl6YVN5QjV5ZE9JYTV0RE54dmVod0duUDdhTGpfNGU3Q3l5SUJJIn0.B_3A0-_ZJq1uf3EDo2lj9b0BfJaaEAC68FFoRCVZQjo",
+     "data":["dog", "apple"]
+}

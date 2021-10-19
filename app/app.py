@@ -27,7 +27,7 @@ app = Flask(__name__)
 CORS(app, support_credentials=True)
 app.config['JSON_AS_ASCII'] = False
 
-
+print(hashlib.sha256('password'.encode()).hexdigest())
 @app.route("/", methods=['GET'])
 @cross_origin(supports_credentials=True)
 def index():
