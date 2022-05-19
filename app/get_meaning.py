@@ -19,10 +19,14 @@ class GetMeaning():
 
                 resp = requests.get(url, timeout=1, headers=self.headers)
                 soup = BeautifulSoup(resp.text, "lxml")
-                jp = soup.find('td', class_="content-explanation ej") #HTML内のclass "content-explanation ej" を切り出し
-                eng = soup.find(id="h1Query") #HTML内のid "h1Query"を切り出し
+                # jp = soup.find('td', class_="content-explanation ej") #HTML内のclass "content-explanation ej" を切り出し
+                jp = soup.find('span', class_="content-explanation ej") #HTML内のclass "content-explanation ej" を切り出し
 
-                eng_jp_dic['eng'] = eng.get_text() #jp のtext部分（英語）を切り取り辞書に追加
+                #eng = soup.find(id="h1Query") #HTML内のid "h1Query"を切り出し
+
+                #eng_jp_dic['eng'] = eng.get_text() #jp のtext部分（英語）を切り取り辞書に追加
+                eng_jp_dic['eng'] = word
+                print(jp.get_text())
                 eng_jp_dic['jp'] = jp.get_text() #engのtext部分（日本語意味）を切りとり辞書に追加
 
                 self.result_list.append(eng_jp_dic) #日本語意味、英単語セットの辞書配列を追加
